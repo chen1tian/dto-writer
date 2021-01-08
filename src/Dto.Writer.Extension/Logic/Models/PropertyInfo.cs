@@ -1,5 +1,7 @@
 ﻿using Dto.Writer.Logic.PropertyMappers;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections.Generic;
 
 namespace Dto.Writer.Logic.Models
 {
@@ -21,6 +23,9 @@ namespace Dto.Writer.Logic.Models
 
         public PropertyMapper Mapper { get; set; }
 
-        public PropertyDeclarationSyntax PropertyDeclarationSyntax { get; set; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public IEnumerable<SyntaxTrivia> CommentTrivias { get; set; }
     }
 }

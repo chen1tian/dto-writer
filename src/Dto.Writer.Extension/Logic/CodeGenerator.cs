@@ -40,11 +40,9 @@ namespace Dto.Writer.Logic
                 var toModelFieldsMapping = new StringBuilder("\n");
                 foreach (var prop in model.Properties.Where(p => p.IsEnabled))
                 {
-                    //var propertyDeclaration = createPropertyDeclaration(prop,
-                    //                                                    model.NeedDataMemberPropertyAttribute,
-                    //                                                    model.NeedJsonPropertyAttribute);
-
-                    var propertyDeclaration = prop.PropertyDeclarationSyntax;
+                    var propertyDeclaration = CreatePropertyDeclaration(prop,
+                                                                        model.NeedDataMemberPropertyAttribute,
+                                                                        model.NeedJsonPropertyAttribute);
 
                     dtoDeclaration = dtoDeclaration.AddMembers(propertyDeclaration);
 
@@ -106,7 +104,7 @@ namespace Dto.Writer.Logic
             return toModelMethodDeclaration;
         }
 
-        private PropertyDeclarationSyntax createPropertyDeclaration(PropertyInfo prop, bool needDataMemberAttribute, bool needJsonPropAttribute)
+        private PropertyDeclarationSyntax CreatePropertyDeclaration(PropertyInfo prop, bool needDataMemberAttribute, bool needJsonPropAttribute)
         {
             var setAccessor = SyntaxFactory.AccessorDeclaration(SyntaxKind.SetAccessorDeclaration)
               .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken));
@@ -114,11 +112,15 @@ namespace Dto.Writer.Logic
                 setAccessor = setAccessor.AddModifiers(SyntaxFactory.Token(SyntaxKind.PrivateKeyword));
 
             var propertyDeclaration = SyntaxFactory
-              .PropertyDeclaration(string.IsNullOrWhiteSpace(prop.TypeName) ? prop.Type : SyntaxFactory.ParseTypeName(prop.TypeName), prop.Name)
+              .PropertyDeclaration(string.IsNullOrWhiteSpace(prop.TypeName) ? prop.Type : SyntaxFactory.ParseTypeName(prop.TypeName), prop.Name)              
               .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
               .AddAccessorListAccessors(
-                SyntaxFactory.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration).WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken)),
-                setAccessor);
+                SyntaxFactory.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+                .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken)                
+                ),
+                setAccessor)
+              .WithLeadingTrivia(prop.CommentTrivias)
+              ;
 
             if (needDataMemberAttribute)
                 propertyDeclaration = propertyDeclaration.AddDataMemberAttribute();

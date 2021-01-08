@@ -57,6 +57,9 @@ namespace Dto.Writer.Logic
 
         private PropertyInfo GetPropertyInfo(PropertyDeclarationSyntax node, SemanticModel semanticModel)
         {
+            // 得到备注            
+            var singleLineComment = node.GetLeadingTrivia().Where(x => x.Kind() == SyntaxKind.SingleLineDocumentationCommentTrivia);
+
             var isEnumerable = false;
             var isGeneric = false;
             var typeInfo = semanticModel.GetTypeInfo(node.Type);
@@ -138,7 +141,7 @@ namespace Dto.Writer.Logic
                 IsGenericType = isGeneric,
                 Mapper = mapper,
                 HasSetter = hasSetter,
-                PropertyDeclarationSyntax = node
+                CommentTrivias = singleLineComment
             };
         }
     }
