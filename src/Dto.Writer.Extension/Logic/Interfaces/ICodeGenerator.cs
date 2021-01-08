@@ -2,8 +2,8 @@
 
 namespace Dto.Writer.Logic.Interfaces
 {
-  public interface ICodeGenerator
-  {
-    string GenerateSourcecode(FileInfo fileInfo);
-  }
+    public interface ICodeGenerator
+    {
+        string GenerateSourcecode(FileInfo fileInfo, string outFilePath);
+    }
 }

@@ -3,17 +3,22 @@ using System.Threading.Tasks;
 
 namespace Dto.Writer
 {
-  internal class Helper
-  {
-    public static Task<string> ReadFile(string path)
+    internal class Helper
     {
-      return Task.Run(() =>
-      {
-        using (var reader = new StreamReader(path))
+        public static Task<string> ReadFile(string path)
         {
-          return reader.ReadToEnd();
+            return Task.Run(() =>
+            {
+                if (!File.Exists(path))
+                {
+                    return null;
+                }
+
+                using (var reader = new StreamReader(path))
+                {
+                    return reader.ReadToEnd();
+                }
+            });
         }
-      });
     }
-  }
 }
