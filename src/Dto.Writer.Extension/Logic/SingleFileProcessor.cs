@@ -35,28 +35,7 @@ namespace Dto.Writer.Logic
             var syntaxRoot = await selectedSyntaxTree.GetRootAsync();
             var namespaceTitle = syntaxRoot.DescendantNodes().OfType<NamespaceDeclarationSyntax>().First().Name.ToString();
             var classes = syntaxRoot.DescendantNodes().OfType<ClassDeclarationSyntax>();
-
-            //foreach (var @class in classes)
-            //{
-            //    var DocumentationCommentExteriorTrivia = @class.GetLeadingTrivia().Where(x => x.Kind() == SyntaxKind.DocumentationCommentExteriorTrivia);
-            //    var EndOfDocumentationCommentToken = @class.GetLeadingTrivia().Where(x => x.Kind() == SyntaxKind.EndOfDocumentationCommentToken);
-            //    var MultiLineDocumentationCommentTrivia = @class.GetLeadingTrivia().Where(x => x.Kind() == SyntaxKind.MultiLineDocumentationCommentTrivia);
-            //    var SingleLineDocumentationCommentTrivia = @class.GetLeadingTrivia().Where(x => x.Kind() == SyntaxKind.SingleLineDocumentationCommentTrivia);
-
-            //    var Properties = @class.DescendantNodes().OfType<PropertyDeclarationSyntax>();
-
-            //    foreach (var p in Properties)
-            //    {
-            //        var Documentation = p.GetLeadingTrivia().Where(x => x.Kind() == SyntaxKind.DocumentationCommentExteriorTrivia);
-            //        var EndOfDocumentation = p.GetLeadingTrivia().Where(x => x.Kind() == SyntaxKind.EndOfDocumentationCommentToken);
-            //        var MultiLineDocumentation = p.GetLeadingTrivia().Where(x => x.Kind() == SyntaxKind.MultiLineDocumentationCommentTrivia);
-            //        var SingleLineDocumentation = p.GetLeadingTrivia().Where(x => x.Kind() == SyntaxKind.SingleLineDocumentationCommentTrivia);
-            //    }
-            //}
-
-
-
-
+                        
             var compilation = CSharpCompilation.Create(namespaceTitle)
               .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
               .AddSyntaxTrees(projectSyntaxTrees.Union(new[] { selectedSyntaxTree }));
