@@ -40,9 +40,12 @@ namespace Dto.Writer.Logic
                 var toModelFieldsMapping = new StringBuilder("\n");
                 foreach (var prop in model.Properties.Where(p => p.IsEnabled))
                 {
-                    var propertyDeclaration = createPropertyDeclaration(prop,
-                                                                        model.NeedDataMemberPropertyAttribute,
-                                                                        model.NeedJsonPropertyAttribute);
+                    //var propertyDeclaration = createPropertyDeclaration(prop,
+                    //                                                    model.NeedDataMemberPropertyAttribute,
+                    //                                                    model.NeedJsonPropertyAttribute);
+
+                    var propertyDeclaration = prop.PropertyDeclarationSyntax;
+
                     dtoDeclaration = dtoDeclaration.AddMembers(propertyDeclaration);
 
                     if (model.NeedFromModelMethod)
